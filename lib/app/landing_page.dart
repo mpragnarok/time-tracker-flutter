@@ -16,6 +16,10 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
     _checkCurrentUser();
+    widget.auth.onAuthStateChanged.listen((user) {
+//      if user is null it'll print "user: null"
+      print('user: ${user?.uid}');
+    });
   }
 
   Future<void> _checkCurrentUser() async {
@@ -31,16 +35,31 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_user == null) {
-      return SignInPage(
-        auth: widget.auth,
+    return StreamBuilder<User>(
+        stream: widget.auth.onAuthStateChanged,
+        builder: (context, snapshot) {
+          snapshot.connectionState
+          if (snapshot.hasData) {
+            User user = snapshot.data;
+            if (user == null) {
+              return SignInPage(
+                auth: widget.auth,
 //      Same as: onSignIn: (user) => _updateUser(user), onSignIn and _updateUser have the same signature(FirebaseUser)
-        onSignIn: _updateUser,
-      );
-    }
-    return HomePage(
-      auth: widget.auth,
-      onSignOut: () => _updateUser(null),
-    );
+                onSignIn: _updateUser,
+              );
+            }
+            return HomePage(
+              auth: widget.auth,
+              onSignOut: () => _updateUser(null),
+            );
+          } else {
+//            Spinner
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        });
   }
 }
