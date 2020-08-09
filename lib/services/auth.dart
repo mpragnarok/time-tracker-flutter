@@ -12,7 +12,6 @@ abstract class AuthBase {
   Stream<User> get onAuthStateChanged;
   Future<User> currentUser();
   Future<User> signInAnonymously();
-  // TODO 2: Add method into abstract class
   Future<User> signInWithGoogle();
   Future<void> signOut();
 }
@@ -27,7 +26,6 @@ class Auth implements AuthBase {
     return User(uid: user.uid);
   }
 
-//TODO 3: onAuthStateChanged takes care of the flow
   @override
   Stream<User> get onAuthStateChanged {
 // map: S -> T (FirebaseUser -> User) convert Type
@@ -47,7 +45,6 @@ class Auth implements AuthBase {
     return _userFromFirebase(authResult.user);
   }
 
-//  TODO 1: Add signIn method
   @override
   Future<User> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn();
@@ -78,6 +75,9 @@ class Auth implements AuthBase {
 
   @override
   Future<void> signOut() async {
+//  TODO: Support google sign out
+    final googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
     return await _firebaseAuth.signOut();
   }
 }

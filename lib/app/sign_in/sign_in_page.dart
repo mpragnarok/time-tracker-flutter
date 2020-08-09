@@ -14,7 +14,6 @@ class SignInPage extends StatelessWidget {
     }
   }
 
-// TODO 4: Use the signIn method in the widget
   Future<void> _signInWithGoogle() async {
     try {
       await auth.signInWithGoogle();
