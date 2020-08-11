@@ -78,7 +78,7 @@ class Auth implements AuthBase {
   @override
   Future<User> signInWithFacebook() async {
     final facebookLogin = FacebookLogin();
-//    Add this to avoid status always cancelledByUser in iOS 13.1
+    //    Add this to avoid status always cancelledByUser in iOS 13.1
     facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
     final result = await facebookLogin.logIn(['public_profile ']);
     if (result.accessToken != null) {
