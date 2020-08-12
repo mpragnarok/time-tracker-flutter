@@ -31,8 +31,6 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       _isLoading = true;
     });
     try {
-//      Simulate delay network
-//      await Future.delayed(Duration(seconds: 3));
       if (_formType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
       } else {
@@ -49,7 +47,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete() {
-    FocusScope.of(context).requestFocus(_passwordFocusNode);
+    final newFocus = widget.emailValidator.isValid(_email)
+        ? _passwordFocusNode
+        : _emailFocusNode;
+    FocusScope.of(context).requestFocus(newFocus);
   }
 
   void _toggleFormType() {
