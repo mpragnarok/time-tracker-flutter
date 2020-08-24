@@ -13,11 +13,11 @@ class LandingPage extends StatelessWidget {
         stream: auth.onAuthStateChanged,
         builder: (context, snapshot) {
 //          .hasData is to check the data != null and before first stream emit, the snapshot doesn't have any data, this is the reason we change it to check the connectionState is activated
-
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
             if (user == null) {
-              return SignInPage();
+              //  Implement Bloc TODO 3: call a static create method for creating SignInPage
+              return SignInPage.create(context);
             }
             return HomePage();
           } else {
