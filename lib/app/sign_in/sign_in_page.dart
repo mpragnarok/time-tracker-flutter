@@ -8,19 +8,16 @@ import 'package:time_tracker_flutter_course/app/sign_in/social_sign_in_button.da
 import 'package:time_tracker_flutter_course/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 
-//  Implement Bloc TODO 6: refactor as StatelessWidget
 class SignInPage extends StatelessWidget {
-  //  Implement Bloc TODO 7: Add bloc in order to remove repetitive Provider.of(context)
   const SignInPage({Key key, @required this.bloc}) : super(key: key);
   final SignInBloc bloc;
 
-//  Implement Bloc TODO 2: create a static method when creating widgets that require a bloc
   static Widget create(BuildContext context) {
+    //  Implement Auth in SignInBloc TODO 5: Get auth from provider and pass into SignInBloc
+    final auth = Provider.of<AuthBase>(context);
     return Provider<SignInBloc>(
-      create: (_) => SignInBloc(),
-      //  Implement Bloc TODO 9: Dispose bloc when widget remove from the tree
+      create: (_) => SignInBloc(auth: auth),
       dispose: (context, bloc) => bloc.dispose(),
-      //  Implement Bloc TODO 8: Pass bloc with Consumer widget
       child: Consumer<SignInBloc>(
           builder: (context, bloc, _) => SignInPage(
                 bloc: bloc,
@@ -36,43 +33,30 @@ class SignInPage extends StatelessWidget {
   }
 
   Future<void> _signInAnonymously(BuildContext context) async {
-    //  Implement Bloc TODO 5: set loading status via bloc
     try {
-      bloc.setIsLoading(true);
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signInAnonymously();
+      await bloc.signInAnonymously();
     } on PlatformException catch (e) {
       _showSignInError(context, e);
-    } finally {
-      bloc.setIsLoading(false);
     }
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      bloc.setIsLoading(true);
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signInWithGoogle();
+      await bloc.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
       }
-    } finally {
-      bloc.setIsLoading(false);
     }
   }
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      bloc.setIsLoading(true);
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signInWithFacebook();
+      await bloc.signInWithFacebook();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
       }
-    } finally {
-      bloc.setIsLoading(false);
     }
   }
 
@@ -87,7 +71,6 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //  Implement Bloc TODO 4: Add StreamBuilder to read loading status
     return Scaffold(
       appBar: AppBar(
         title: Text('Time Tracker'),
