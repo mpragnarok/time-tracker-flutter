@@ -28,7 +28,6 @@ class EmailSignInBloc {
       }
     } catch (e) {
       updateWith(isLoading: false);
-
       rethrow;
     }
   }
