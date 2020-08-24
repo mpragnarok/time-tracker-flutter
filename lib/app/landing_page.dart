@@ -16,7 +16,6 @@ class LandingPage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
             if (user == null) {
-              //  Implement Bloc TODO 3: call a static create method for creating SignInPage
               return SignInPage.create(context);
             }
             return HomePage();

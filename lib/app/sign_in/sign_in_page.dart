@@ -13,7 +13,6 @@ class SignInPage extends StatelessWidget {
   final SignInBloc bloc;
 
   static Widget create(BuildContext context) {
-    //  Implement Auth in SignInBloc TODO 5: Get auth from provider and pass into SignInBloc
     final auth = Provider.of<AuthBase>(context);
     return Provider<SignInBloc>(
       create: (_) => SignInBloc(auth: auth),
