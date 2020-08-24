@@ -27,9 +27,9 @@ class EmailSignInBloc {
         auth.createUserWithEmailAndPassword(_model.email, _model.password);
       }
     } catch (e) {
-      rethrow;
-    } finally {
       updateWith(isLoading: false);
+
+      rethrow;
     }
   }
 
